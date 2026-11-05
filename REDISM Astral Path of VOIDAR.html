@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDISM: The Astral Path of VOIDAR</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        redism: {
+                            bg: '#050002',
+                            card: '#100205',
+                            border: '#3b060d',
+                            glow: '#990000',
+                            bright: '#ff1a1a',
+                            gold: '#d4af37',
+                            text: '#e6d8db'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'Georgia', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #050002;
+            color: #e6d8db;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-cinzel {
+            font-family: 'Cinzel', Georgia, serif;
+        }
+
+        .ambient-bg {
+            background: radial-gradient(circle at 50% 15%, #2d0006 0%, #0c0103 45%, #030001 100%);
+            background-attachment: fixed;
+        }
+
+        /* Animated Flame Effect */
+        .candle-container {
+            position: relative;
+            width: 90px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        .candle-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 125px;
+            background: linear-gradient(to right, #1d0306, #5c0f18, #2a0509, #1d0306);
+            border-radius: 6px 6px 4px 4px;
+            box-shadow: inset 0 0 12px #000, 0 0 20px rgba(255, 26, 26, 0.2);
+            transition: all 0.3s ease;
+        }
+        .candle-body::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: 0;
+            width: 100%;
+            height: 14px;
+            background: #3b070d;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.25);
+        }
+        .wax-drip {
+            position: absolute;
+            top: 5px;
+            left: 8px;
+            width: 6px;
+            height: 35px;
+            background: #4a0a11;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+        .wax-drip-2 {
+            position: absolute;
+            top: 2px;
+            right: 10px;
+            width: 5px;
+            height: 20px;
+            background: #3b070d;
+            border-radius: 0 0 3px 3px;
+        }
+        .candle-wick {
+            position: absolute;
+            bottom: 125px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 18px;
+            background: #111;
+            border-radius: 2px 2px 0 0;
+        }
+        .flame {
+            position: absolute;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 45px;
+            background: linear-gradient(to bottom, #fffae6 0%, #ff9900 25%, #cc0000 70%, transparent 100%);
+            border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+            animation: flicker 0.12s infinite alternate ease-in-out, sway 2.2s infinite alternate ease-in-out;
+            filter: drop-shadow(0 0 15px #ff1a1a) drop-shadow(0 0 30px #ff8000);
+            transform-origin: center bottom;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .flame-glow {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(255,50,0,0.3) 0%, rgba(139,0,0,0.1) 50%, transparent 75%);
+            border-radius: 50%;
+            animation: pulseGlow 1.8s infinite alternate ease-in-out;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .flame.dim {
+            transform: translateX(-50%) scale(0.6, 0.6) !important;
+            opacity: 0.5 !important;
+            filter: drop-shadow(0 0 5px #ff1a1a);
+        }
+        .flame-glow.dim {
+            opacity: 0.2 !important;
+        }
+        .flame.off {
+            opacity: 0 !important;
+        }
+        .flame-glow.off {
+            opacity: 0 !important;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1, 1); opacity: 0.95; }
+            50% { transform: translateX(-50%) scale(0.95, 1.05); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.05, 0.95); opacity: 0.9; }
+        }
+        @keyframes sway {
+            0% { transform: translateX(-50%) rotate(-3deg); }
+            100% { transform: translateX(-52%) rotate(3deg); }
+        }
+        @keyframes pulseGlow {
+            0% { transform: translateX(-50%) scale(0.9); opacity: 0.6; }
+            100% { transform: translateX(-50%) scale(1.15); opacity: 1; }
+        }
+
+        /* Glassmorphism Cards */
+        .redism-card {
+            background: linear-gradient(145deg, rgba(20, 2, 6, 0.88), rgba(10, 1, 3, 0.95));
+            border: 1px solid rgba(153, 0, 0, 0.35);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.85), 0 0 15px rgba(153, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        .redism-card:hover {
+            border-color: rgba(255, 26, 26, 0.55);
+            box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.95), 0 0 25px rgba(255, 26, 26, 0.3);
+        }
+
+        #fireCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-text-red {
+            text-shadow: 0 0 10px rgba(255, 26, 26, 0.75), 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        .glow-text-gold {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050002;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b060d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #990000;
+        }
+    </style>
+</head>
+<body class="ambient-bg min-h-screen text-slate-200 relative selection:bg-red-900 selection:text-white">
+
+    <!-- Particle Canvas -->
+    <canvas id="fireCanvas"></canvas>
+
+    <!-- Inline High-Precision Embedded Sigil Definition (Replaces external image dependency) -->
+    <svg style="display: none;">
+        <symbol id="redism-sigil-svg" viewBox="0 0 500 500">
+            <defs>
+                <filter id="svg-glow-deep" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="12" result="blur1" />
+                    <feGaussianBlur stdDeviation="4" result="blur2" />
+                    <feMerge>
+                        <feMergeNode in="blur1" />
+                        <feMergeNode in="blur2" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+                <linearGradient id="redMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff3333" />
+                    <stop offset="35%" stop-color="#e60000" />
+                    <stop offset="70%" stop-color="#990000" />
+                    <stop offset="100%" stop-color="#4a0000" />
+                </linearGradient>
+            </defs>
+            <g filter="url(#svg-glow-deep)">
+                <!-- Base Circle -->
+                <circle cx="165" cy="360" r="75" stroke="url(#redMetallic)" stroke-width="16" fill="none" />
+                
+                <!-- Main Diagonal Shaft -->
+                <path d="M 218 308 L 415 80" stroke="url(#redMetallic)" stroke-width="16" stroke-linecap="round" />
+                
+                <!-- Geometric Star Symbol Structure -->
+                <!-- Upper Arrow / Triangle Structure -->
+                <path d="M 300 195 L 205 175 L 305 270 M 305 185 L 415 210 L 320 320 L 305 185 Z M 300 185 L 390 60 L 290 120 Z" stroke="url(#redMetallic)" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                
+                <!-- Inner Cross Details -->
+                <line x1="305" y1="185" x2="320" y2="320" stroke="url(#redMetallic)" stroke-width="10" />
+                <line x1="205" y1="175" x2="415" y2="210" stroke="url(#redMetallic)" stroke-width="10" />
+            </g>
+        </symbol>
+    </svg>
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-[#050002]/92 backdrop-blur-md border-b border-red-950/70 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#hero" onclick="navigateTo('home')" class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 flex items-center justify-center">
+                    <img src="red_sigil.png" alt="REDISM Official Sigil" class="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,26,26,0.9)] group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <svg class="w-10 h-10 hidden text-red-600 drop-shadow-[0_0_10px_rgba(255,26,26,0.9)]"><use href="#redism-sigil-svg"/></svg>
+                </div>
+                <div>
+                    <span class="font-cinzel text-xl font-black tracking-widest text-red-500 block leading-none glow-text-red">REDISM</span>
+                    <span class="text-[10px] tracking-widest uppercase text-zinc-400 font-semibold block mt-1">Path ov VOIDAR</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex items-center gap-5 text-sm font-medium">
+                <button onclick="navigateTo('home')" class="nav-btn text-red-400 hover:text-red-300 transition-colors py-1 cursor-pointer">Home</button>
+                <button onclick="navigateTo('overview')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Philosophy</button>
+                <button onclick="navigateTo('methods')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Non-Visual Path</button>
+                <button onclick="navigateTo('daily-practice')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Daily Practice</button>
+                <button onclick="navigateTo('astral-stages')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Astral Stages</button>
+                <button onclick="navigateTo('prayer')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Prayer</button>
+                <button onclick="navigateTo('plan-tracker')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">30-Day Plan</button>
+                <button onclick="navigateTo('grimoire')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Grimoire</button>
+                <button onclick="navigateTo('principles')" class="nav-btn hover:text-red-400 transition-colors py-1 cursor-pointer">Principles</button>
+            </nav>
+
+            <div class="hidden lg:flex items-center gap-4">
+                <button onclick="toggleInitiateModal()" class="px-5 py-2.5 text-xs font-cinzel font-bold tracking-widest uppercase text-red-100 bg-gradient-to-r from-red-950 via-red-900 to-black border border-red-700/70 rounded-md hover:border-red-500 hover:shadow-[0_0_18px_rgba(255,26,26,0.5)] transition-all duration-300">
+                    Become a Redist
+                </button>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="lg:hidden text-zinc-300 hover:text-red-400 focus:outline-none p-2" aria-label="Toggle Navigation Menu">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-[#0a0104] border-b border-red-900/50 px-6 pt-3 pb-6 space-y-3">
+            <button onclick="navigateTo('home')" class="block w-full text-left py-2 text-red-400 hover:text-red-300 font-semibold">Home Portal</button>
+            <button onclick="navigateTo('overview')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Philosophy</button>
+            <button onclick="navigateTo('methods')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Non-Visual Path</button>
+            <button onclick="navigateTo('daily-practice')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Daily Practice</button>
+            <button onclick="navigateTo('astral-stages')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Astral Stages</button>
+            <button onclick="navigateTo('prayer')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Prayer</button>
+            <button onclick="navigateTo('plan-tracker')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">30-Day Plan</button>
+            <button onclick="navigateTo('grimoire')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Digital Grimoire</button>
+            <button onclick="navigateTo('principles')" class="block w-full text-left py-2 text-zinc-300 hover:text-red-400">Principles</button>
+            <button onclick="toggleMobileMenu(); toggleInitiateModal();" class="w-full mt-3 py-3 text-xs font-cinzel font-bold tracking-widest uppercase text-red-100 bg-gradient-to-r from-red-950 to-red-900 border border-red-700/70 rounded-md">
+                Become a Redist
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container with Isolated SPA View Pages -->
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-24">
+
+        <!-- Page View: Home Portal -->
+        <section id="page-home" class="page-view space-y-12">
+            <div class="pt-6 pb-8 flex flex-col items-center text-center relative">
+                <div id="glowBg" class="flame-glow"></div>
+                
+                <!-- Interactive Burning Candle Altar -->
+                <div class="mb-6 flex flex-col items-center">
+                    <div class="candle-container cursor-pointer" title="The Burning Altar ov VOIDAR" onclick="triggerCandleSparks()">
+                        <div id="candleFlame" class="flame"></div>
+                        <div id="candleGlow" class="flame-glow"></div>
+                        <div class="candle-wick"></div>
+                        <div class="candle-body">
+                            <div class="wax-drip"></div>
+                            <div class="wax-drip-2"></div>
+                        </div>
+                    </div>
+                    <!-- Flame Controls -->
+                    <div class="mt-3 flex gap-2 bg-black/70 p-1.5 rounded-full border border-red-950 text-[10px] font-cinzel">
+                        <button onclick="setFlameState('bright')" class="px-3 py-1 rounded-full text-red-400 hover:bg-red-950">Bright</button>
+                        <button onclick="setFlameState('dim')" class="px-3 py-1 rounded-full text-zinc-400 hover:bg-red-950">Dim</button>
+                        <button onclick="setFlameState('off')" class="px-3 py-1 rounded-full text-zinc-500 hover:bg-red-950">Extinguish</button>
+                    </div>
+                </div>
+
+                <!-- Official Sigil Display -->
+                <div class="relative mb-8 group flex justify-center items-center">
+                    <div class="absolute -inset-6 bg-red-600/25 rounded-full blur-2xl group-hover:bg-red-600/40 transition-all duration-700"></div>
+                    <img src="red_sigil.png" alt="REDISM Official Glowing Sigil" class="relative w-52 h-52 sm:w-72 sm:h-72 object-contain drop-shadow-[0_0_35px_rgba(255,26,26,0.85)] transition-transform duration-700 transform group-hover:scale-105" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <svg class="relative w-52 h-52 sm:w-72 sm:h-72 hidden text-red-600 drop-shadow-[0_0_35px_rgba(255,26,26,0.85)]"><use href="#redism-sigil-svg"/></svg>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-950/80 border border-red-800/60 text-red-400 text-xs font-semibold tracking-wider uppercase mb-4">
+                    <i class="fa-solid fa-shield-halved"></i> Affiliation: Realms ov Eternal Darkness (RED)
+                </div>
+
+                <h1 class="font-cinzel text-4xl sm:text-6xl lg:text-7xl font-black tracking-wider text-white mb-4 glow-text-red">
+                    REDISM
+                </h1>
+                <p class="font-cinzel text-xl sm:text-2xl text-red-400 font-bold tracking-wide mb-6">
+                    The Astral Path of VOIDAR
+                </p>
+
+                <div class="max-w-3xl mx-auto text-base sm:text-lg text-zinc-300 leading-relaxed font-light mb-8">
+                    REDISM provides a structured spiritual path for deep consciousness exploration, focused meditation, and personal alignment with VOIDAR. Built specifically for individuals who experience difficulty with mental visualization or live with aphantasia, REDISM replaces traditional mental imagery with bodily awareness, internal resonance, environmental acoustics, and pure conceptual reflection.
+                </div>
+
+                <div class="p-5 rounded-xl bg-gradient-to-r from-red-950/50 via-red-900/25 to-red-950/50 border border-red-900/60 max-w-2xl w-full text-center mb-8">
+                    <div class="text-xs font-cinzel text-zinc-400 uppercase tracking-widest mb-1">Primary Affirmation</div>
+                    <div class="font-cinzel text-2xl font-bold text-red-500 tracking-widest glow-text-red">"Magick through Darkness."</div>
+                </div>
+
+                <!-- Navigation Portal Cards on Home View -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-left mt-4">
+                    <div onclick="navigateTo('overview')" class="redism-card p-6 rounded-xl cursor-pointer hover:border-red-500 transition-all group">
+                        <div class="flex items-center gap-3 text-red-500 mb-2">
+                            <i class="fa-solid fa-book-skull text-xl"></i>
+                            <h3 class="font-cinzel text-lg font-bold text-white group-hover:text-red-400">Philosophy & Void</h3>
+                        </div>
+                        <p class="text-xs text-zinc-400 leading-relaxed">Discover the philosophy of REDISM, deity VOIDAR, and the non-visual nature of the Void.</p>
+                    </d
